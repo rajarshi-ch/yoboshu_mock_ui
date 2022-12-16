@@ -1,31 +1,33 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'demography_step_num_model.dart';
+part of 'demography_step_statement_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-DemographyStepNumModel _$DemographyStepNumModelFromJson(
+DemographyStepStatementModel _$DemographyStepStatementModelFromJson(
         Map<String, dynamic> json) =>
-    DemographyStepNumModel(
+    DemographyStepStatementModel(
       id: json['id'] as String,
       previous: json['previous'] as String,
       next: json['next'] as String,
       type: json['type'] as String,
-      question: json['question'] as String,
-      key: json['key'] as String,
+      message: json['message'] as String,
       ui: UiModel.fromJson(json['ui'] as Map<String, dynamic>),
+      messages: (json['messages'] as List<dynamic>?)
+          ?.map((e) => MessageModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$DemographyStepNumModelToJson(
-        DemographyStepNumModel instance) =>
+Map<String, dynamic> _$DemographyStepStatementModelToJson(
+        DemographyStepStatementModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'previous': instance.previous,
       'next': instance.next,
       'type': instance.type,
-      'question': instance.question,
-      'key': instance.key,
+      'message': instance.message,
       'ui': instance.ui,
+      'messages': instance.messages,
     };
