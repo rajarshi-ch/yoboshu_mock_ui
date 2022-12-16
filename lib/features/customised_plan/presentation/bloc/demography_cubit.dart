@@ -9,7 +9,7 @@ import '../../../../core/error/failures.dart';
 part 'demography_state.dart';
 
 class DemographyCubit extends Cubit<DemographyState> {
-  DemographyCubit({required this.getDemographyStepByIdUseCase, this.formState}) : super(DemographyInitial()){
+  DemographyCubit({required this.getDemographyStepByIdUseCase }) : super(DemographyInitial()){
     initSteps();
   }
 
@@ -27,7 +27,7 @@ class DemographyCubit extends Cubit<DemographyState> {
   }
 
   void setFormValue(String key, dynamic value) {
-    if (formState) {
+    if (formState != null) {
       formState[key] = value;
     }
   }

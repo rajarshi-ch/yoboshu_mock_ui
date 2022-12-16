@@ -20,6 +20,7 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
     duration: const Duration(seconds: 1),
     vsync: this,
   );
+
   late final Animation<double> _animation = CurvedAnimation(
     parent: _controller,
     curve: Curves.easeIn,
@@ -54,7 +55,19 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
         children: [
           if (widget.step is DemographyStepNum) ...[
             Text((widget.step as DemographyStepNum).question),
+            if((widget.step as DemographyStepNum).ui.label != null ) TextFormField(
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                label: Text((widget.step as DemographyStepNum).ui.label),
 
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (String value){
+                print(value);
+                widget.bloc.setFormValue((widget.step as DemographyStepNum).key, value);
+              },
+              initialValue: widget.bloc.getFormValue((widget.step as DemographyStepNum).key),
+            ),
             OutlinedButton(
                 onPressed: () {
                   widget.bloc.goToNextStep();
