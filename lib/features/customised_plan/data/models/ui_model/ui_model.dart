@@ -12,8 +12,8 @@ class UiModel {
   final String? placeholder;
   final String? inputDesciption;
   final String? imageURL;
-
-  UiModel(this.label, this.iconURL, this.buttonDesc, this.placeholder, this.inputDesciption, this.imageURL);
+  final List<String>? imageUrls;
+  UiModel(this.label, this.iconURL, this.buttonDesc, this.placeholder, this.inputDesciption, this.imageURL, this.imageUrls);
 
   factory UiModel.fromJson(Map<String, dynamic> json) =>
       _$UiModelFromJson(json);

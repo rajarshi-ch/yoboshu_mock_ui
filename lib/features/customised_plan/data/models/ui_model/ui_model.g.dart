@@ -13,6 +13,7 @@ UiModel _$UiModelFromJson(Map<String, dynamic> json) => UiModel(
       json['placeholder'] as String?,
       json['inputDesciption'] as String?,
       json['imageURL'] as String?,
+      (json['imageUrls'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$UiModelToJson(UiModel instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$UiModelToJson(UiModel instance) => <String, dynamic>{
       'placeholder': instance.placeholder,
       'inputDesciption': instance.inputDesciption,
       'imageURL': instance.imageURL,
+      'imageUrls': instance.imageUrls,
     };
