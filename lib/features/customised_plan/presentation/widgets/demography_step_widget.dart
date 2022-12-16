@@ -53,8 +53,13 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
       key: ValueKey<String>(widget.step.id),
       child: Column(
         children: [
+
+          /// The step is of type == num
+          ///
           if (widget.step is DemographyStepNum) ...[
             Text((widget.step as DemographyStepNum).question),
+
+            /// Using the label field to identify weather to render a text field
             if((widget.step as DemographyStepNum).ui.label != null ) TextFormField(
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -63,10 +68,48 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
               ),
               keyboardType: TextInputType.number,
               onChanged: (String value){
-                print(value);
                 widget.bloc.setFormValue((widget.step as DemographyStepNum).key, value);
               },
               initialValue: widget.bloc.getFormValue((widget.step as DemographyStepNum).key),
+            ),
+
+            /// If key == height, this is the height field
+            if((widget.step as DemographyStepNum).key == "height" ) Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (String value){
+                      widget.bloc.setFormValue("height_feet", value);
+                    },
+                    initialValue: widget.bloc.getFormValue("height_feet"),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(8, 0, 16, 0),
+                  child: Text("feet"),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (String value){
+                      widget.bloc.setFormValue("height_inches", value);
+                    },
+                    initialValue: widget.bloc.getFormValue("height_inches"),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Text("inches"),
+                ),
+                Expanded(child: Container())
+              ],
             ),
             OutlinedButton(
                 onPressed: () {
