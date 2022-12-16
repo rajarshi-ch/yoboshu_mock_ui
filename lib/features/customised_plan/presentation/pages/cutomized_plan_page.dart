@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/demography_step_widget.dart';
+
 
 class CustomizedPlanPage extends StatelessWidget {
   const CustomizedPlanPage({Key? key}) : super(key: key);
@@ -11,29 +15,47 @@ class CustomizedPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Title"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              "Some Text",
+    return BlocBuilder<DemographyCubit, DemographyState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Title"),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: (){
+                if( state is DemographyStepLoaded && state.currentStep.id == "start_demography"){
+                  Navigator.of(context).pop();
+                } else {
+                  BlocProvider.of<DemographyCubit>(context).goToPreviousStep();
+                }
+              },
             ),
-            Text(
-              'Hi',
-              style: Theme.of(context).textTheme.headline4,
+          ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+
+                if( state is DemographyLoading) const Text(
+                  "Loading",
+                ),
+
+                if( state is DemographyInitial) const Text(
+                  "Initial",
+                ),
+
+                if( state is DemographyStepLoaded ) DemographyStepWidget(step: state.currentStep, bloc: BlocProvider.of<DemographyCubit>(context)),
+              ],
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Customize My Plan',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            tooltip: 'Customize My Plan',
+            child: const Icon(Icons.add),
+          ), // This trailing comma makes auto-formatting nicer for build methods.
+        );
+      },
     );
   }
 }
+
