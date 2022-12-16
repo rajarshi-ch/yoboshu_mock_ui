@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/data/models/demography_step_num_model/demography_step_num_model.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/data/models/demography_step_statement_model/demography_step_statement_model.dart';
 
 abstract class DemographyLocalDataSource {
   //Future
@@ -35,6 +36,10 @@ class DemographyLocalDataSourceImpl implements DemographyLocalDataSource {
       case "num" :
         model = DemographyStepNumModel.fromJson(step);
         break;
+      case "statement" :
+        model = DemographyStepStatementModel.fromJson(step);
+        break;
+
     }
     return model;
   }

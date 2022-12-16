@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_base.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_num.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_statement.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
 
 class DemographyStepWidget extends StatefulWidget {
@@ -111,13 +112,25 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
                 Expanded(child: Container())
               ],
             ),
-            OutlinedButton(
-                onPressed: () {
-                  widget.bloc.goToNextStep();
 
-                },
-                child: Text((widget.step as DemographyStepNum).ui.buttonDesc))
           ],
+
+          /// The step is of type == statement
+          ///
+          if (widget.step is DemographyStepStatement) ...[
+            Image.network((widget.step as DemographyStepStatement).ui.imageURL),
+          ],
+
+          Text((widget.step as DemographyStepStatement).message!),
+
+
+          ///Common primary button
+          OutlinedButton(
+              onPressed: () {
+                widget.bloc.goToNextStep();
+
+              },
+              child: Text((widget.step as dynamic).ui.buttonDesc))
         ],
       ),
     );
