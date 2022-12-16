@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:yoboshu_mock_ui/core/utils/date_fns.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_base.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_num.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_statement.dart';
@@ -22,6 +23,8 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
     vsync: this,
   );
 
+  TextEditingController dateCtl = TextEditingController();
+
   late final Animation<double> _animation = CurvedAnimation(
     parent: _controller,
     curve: Curves.easeIn,
@@ -30,8 +33,9 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
   @override
   void initState() {
     super.initState();
+
     /// No need to fade in at initial render of first step
-    _controller.forward( from: 1);
+    _controller.forward(from: 1);
   }
 
   @override
@@ -43,10 +47,12 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
   @override
   void didUpdateWidget(DemographyStepWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     /// Fade in every time we move between steps
     _controller.reset();
     _controller.forward();
   }
+
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
@@ -54,81 +60,108 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
       key: ValueKey<String>(widget.step.id),
       child: Column(
         children: [
-
-          /// The step is of type == num
+          /// The step is of type == num || string || datetime
           ///
           if (widget.step is DemographyStepNum) ...[
             Text((widget.step as DemographyStepNum).question),
 
             /// Using the label field to identify weather to render a text field
-            if((widget.step as DemographyStepNum).ui.label != null ) TextFormField(
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                label: Text((widget.step as DemographyStepNum).ui.label),
+            if ((widget.step as DemographyStepNum).key != "height")
+              (widget.step as DemographyStepNum).type == "datetime"
+                  ? TextFormField(
+                      controller: dateCtl,
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text("Birthday"),
+                        suffix: Icon(Icons.calendar_today),
+                      ),
+                      onChanged: (String value) {
+                        print("On Changed");
+                        widget.bloc.setFormValue(
+                            (widget.step as DemographyStepNum).key, value);
+                      },
+                      onTap: () async {
+                        DateTime? date = DateTime(1900);
+                        FocusScope.of(context).requestFocus(new FocusNode());
 
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (String value){
-                widget.bloc.setFormValue((widget.step as DemographyStepNum).key, value);
-              },
-              initialValue: widget.bloc.getFormValue((widget.step as DemographyStepNum).key),
-            ),
+                        date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            currentDate: dateCtl.text.isNotEmpty ? parseDateString(dateCtl.text) : DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100));
+
+                        if (date != null) dateCtl.text = getFormattedDate(date);
+                      },
+                    )
+                  : TextFormField(
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: Text(
+                            (widget.step as DemographyStepNum).ui.label ?? ""),
+                      ),
+                      keyboardType: getTextInputType(widget.step.type),
+                      onChanged: (String value) {
+                        widget.bloc.setFormValue(
+                            (widget.step as DemographyStepNum).key, value);
+                      },
+                      initialValue: widget.bloc
+                          .getFormValue((widget.step as DemographyStepNum).key),
+                    ),
 
             /// If key == height, this is the height field
-            if((widget.step as DemographyStepNum).key == "height" ) Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+            if ((widget.step as DemographyStepNum).key == "height")
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      onChanged: (String value) {
+                        widget.bloc.setFormValue("height_feet", value);
+                      },
+                      initialValue: widget.bloc.getFormValue("height_feet"),
                     ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (String value){
-                      widget.bloc.setFormValue("height_feet", value);
-                    },
-                    initialValue: widget.bloc.getFormValue("height_feet"),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(8, 0, 16, 0),
-                  child: Text("feet"),
-                ),
-                Expanded(
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(8, 0, 16, 0),
+                    child: Text("feet"),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      onChanged: (String value) {
+                        widget.bloc.setFormValue("height_inches", value);
+                      },
+                      initialValue: widget.bloc.getFormValue("height_inches"),
                     ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (String value){
-                      widget.bloc.setFormValue("height_inches", value);
-                    },
-                    initialValue: widget.bloc.getFormValue("height_inches"),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 8),
-                  child: Text("inches"),
-                ),
-                Expanded(child: Container())
-              ],
-            ),
-
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text("inches"),
+                  ),
+                  Expanded(child: Container())
+                ],
+              ),
           ],
 
           /// The step is of type == statement
           ///
           if (widget.step is DemographyStepStatement) ...[
             Image.network((widget.step as DemographyStepStatement).ui.imageURL),
+            Text((widget.step as DemographyStepStatement).message!),
           ],
-
-          Text((widget.step as DemographyStepStatement).message!),
-
 
           ///Common primary button
           OutlinedButton(
               onPressed: () {
                 widget.bloc.goToNextStep();
-
               },
               child: Text((widget.step as dynamic).ui.buttonDesc))
         ],
@@ -136,3 +169,14 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
     );
   }
 }
+
+TextInputType getTextInputType(String type) {
+  if (type == "num") {
+    return TextInputType.number;
+  } else if (type == "datetime") {
+    return TextInputType.datetime;
+  } else {
+    return TextInputType.text;
+  }
+}
+

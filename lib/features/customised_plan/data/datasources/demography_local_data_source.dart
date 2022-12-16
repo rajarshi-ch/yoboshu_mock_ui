@@ -34,6 +34,8 @@ class DemographyLocalDataSourceImpl implements DemographyLocalDataSource {
     dynamic model;
     switch ( step["type"] ){
       case "num" :
+      case "datetime" :
+      case "string" :
         model = DemographyStepNumModel.fromJson(step);
         break;
       case "statement" :
