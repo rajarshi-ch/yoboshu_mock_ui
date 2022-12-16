@@ -2,8 +2,10 @@ import "package:flutter/material.dart";
 import 'package:yoboshu_mock_ui/core/utils/date_fns.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_base.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_num.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_option.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_statement.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/multiselect_card.dart';
 
 class DemographyStepWidget extends StatefulWidget {
   const DemographyStepWidget({Key? key, required this.step, required this.bloc})
@@ -158,8 +160,26 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
             Text((widget.step as DemographyStepStatement).message!),
           ],
 
+          /// The step is of type == option/s
+          ///
+          if (widget.step is DemographyStepOption) ...[
+            if((widget.step as DemographyStepOption).preDescription != null ) Text((widget.step as DemographyStepOption).preDescription!),
+            Text((widget.step as DemographyStepOption).question!),
+            if((widget.step as DemographyStepOption).postDescription != null ) Text((widget.step as DemographyStepOption).postDescription!),
+
+            ///This is a single select option
+            if(widget.step.type =="option") ...(widget.step as DemographyStepOption).options.map((String option) => OutlinedButton(onPressed: (){
+              //TODO: Set selection of the option
+              widget.bloc.goToNextStep();
+            }, child: Text(option))).toList(),
+
+            ///This is a multi select option
+            if(widget.step.type =="options") ...(widget.step as DemographyStepOption).options.map((String option) => MultiselectCard(title: option)).toList(),
+
+          ],
+
           ///Common primary button
-          OutlinedButton(
+          if(widget.step.type != "option" && widget.step.type != "options") OutlinedButton(
               onPressed: () {
                 widget.bloc.goToNextStep();
               },

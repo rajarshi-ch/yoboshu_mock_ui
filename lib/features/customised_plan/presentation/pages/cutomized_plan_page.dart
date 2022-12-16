@@ -23,8 +23,9 @@ class CustomizedPlanPage extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: (){
-                if( state is DemographyStepLoaded && state.currentStep.id == "start_demography"){
+                if( (state is DemographyStepLoaded && state.currentStep.id == "start_demography") || (state is! DemographyStepLoaded)){
                   Navigator.of(context).pop();
+                  if(state is DemographyError) BlocProvider.of<DemographyCubit>(context).initSteps();
                 } else {
                   BlocProvider.of<DemographyCubit>(context).goToPreviousStep();
                 }
@@ -32,20 +33,26 @@ class CustomizedPlanPage extends StatelessWidget {
             ),
           ),
           body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
 
-                if( state is DemographyLoading) const Text(
-                  "Loading",
-                ),
+                  if( state is DemographyLoading) const Text(
+                    "Loading",
+                  ),
 
-                if( state is DemographyInitial) const Text(
-                  "Initial",
-                ),
+                  if( state is DemographyError) const Text(
+                    "Error",
+                  ),
 
-                if( state is DemographyStepLoaded ) DemographyStepWidget(step: state.currentStep, bloc: BlocProvider.of<DemographyCubit>(context)),
-              ],
+                  if( state is DemographyInitial) const Text(
+                    "Initial",
+                  ),
+
+                  if( state is DemographyStepLoaded ) DemographyStepWidget(step: state.currentStep, bloc: BlocProvider.of<DemographyCubit>(context)),
+                ],
+              ),
             ),
           ),
           floatingActionButton: FloatingActionButton(

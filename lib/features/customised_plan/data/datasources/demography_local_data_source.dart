@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/data/models/demography_step_num_model/demography_step_num_model.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/data/models/demography_step_statement_model/demography_step_statement_model.dart';
 
+import '../models/demography_step_option_model/demography_step_option_model.dart';
+
 abstract class DemographyLocalDataSource {
   //Future
   Future<dynamic> getDemographyStepById( String id );
@@ -41,7 +43,15 @@ class DemographyLocalDataSourceImpl implements DemographyLocalDataSource {
       case "statement" :
         model = DemographyStepStatementModel.fromJson(step);
         break;
-
+      case "option" :
+      case "options" :
+        try {
+          print(step);
+          model = DemographyStepOptionModel.fromJson(step);
+        } catch (e) {
+          print(e);
+        }
+        break;
     }
     return model;
   }

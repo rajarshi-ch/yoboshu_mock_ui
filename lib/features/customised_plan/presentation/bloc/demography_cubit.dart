@@ -50,11 +50,13 @@ class DemographyCubit extends Cubit<DemographyState> {
 
   void goToPreviousStep() async {
 
-    String next = (state as DemographyStepLoaded).currentStep.previous;
-    emit(DemographyLoading());
-    var result = await getDemographyStepByIdUseCase
-        .call(Params(next));
-    resolveUseCaseResult(result);
+    if(state is DemographyStepLoaded){
+      String next = (state as DemographyStepLoaded).currentStep.previous;
+      emit(DemographyLoading());
+      var result = await getDemographyStepByIdUseCase
+          .call(Params(next));
+      resolveUseCaseResult(result);
+    }
   }
 
   /// Handles error and success cases after every usecase call
