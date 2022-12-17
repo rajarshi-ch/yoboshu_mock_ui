@@ -9,7 +9,7 @@ import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demogra
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_statement.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/multiselect_card.dart';
-import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/primary_button.dart';
+import 'package:yoboshu_mock_ui/core/presentation/widgets/primary_button.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/video_player.dart';
 
 import '../../../../core/constants/app_text_styles.dart';
