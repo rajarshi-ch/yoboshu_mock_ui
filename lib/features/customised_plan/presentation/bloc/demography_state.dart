@@ -22,8 +22,8 @@ class DemographyLoading extends DemographyState {
 class DemographyStepLoaded extends DemographyState {
 
   final DemographyStep currentStep;
-
-  const DemographyStepLoaded(this.currentStep);
+  final int stepNumber;
+  const DemographyStepLoaded(this.currentStep, this.stepNumber);
   @override
   List<Object> get props => [];
 }

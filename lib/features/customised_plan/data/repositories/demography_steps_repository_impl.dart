@@ -20,4 +20,17 @@ class DemographyStepsRepositoryImpl implements DemographyStepsRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, int>> getDemographyTotalSteps() async {
+    try {
+      final noOfSteps = await localDataSource.getDemographyTotalSteps();
+      return Right(noOfSteps);
+    } catch (e) {
+      print(e);
+      return left(LocalStorageException());
+    }
+  }
+
+
+
 }

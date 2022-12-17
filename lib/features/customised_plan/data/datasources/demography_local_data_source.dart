@@ -8,6 +8,7 @@ import '../models/demography_step_option_model/demography_step_option_model.dart
 abstract class DemographyLocalDataSource {
   //Future
   Future<dynamic> getDemographyStepById( String id );
+  Future<int> getDemographyTotalSteps();
 
   void cacheDemographySteps(dynamic data);
 
@@ -61,6 +62,19 @@ class DemographyLocalDataSourceImpl implements DemographyLocalDataSource {
     var response = await rootBundle.loadString("assets/json/custom_pages.json");
     final data = await json.decode(response);
     return data;
+  }
+
+  @override
+  Future<int> getDemographyTotalSteps() async {
+    if( jsonData == null){
+      /// this is the first time we are trying to read data
+      ///
+      /// Read from json file and cache it
+      var data = await readJson();
+      cacheDemographySteps( data );
+    }
+
+    return (jsonData as Map<String, dynamic>).length;
   }
   
 }

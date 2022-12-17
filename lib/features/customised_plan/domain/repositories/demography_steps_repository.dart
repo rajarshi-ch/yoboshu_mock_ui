@@ -7,5 +7,6 @@ import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demogra
 abstract class DemographyStepsRepository {
 
   Future<Either<Failure, DemographyStep >> getDemographyStep(String id);
+  Future<Either<Failure, int >> getDemographyTotalSteps();
 
 }
