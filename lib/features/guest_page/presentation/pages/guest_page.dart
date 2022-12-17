@@ -4,6 +4,7 @@ import 'package:yoboshu_mock_ui/core/usecases/usecase.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/data/repositories/demography_steps_repository_impl.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/usecases/get_demography_step_by_id_usecase.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/pages/cutomized_plan_page.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/progress_bar.dart';
 
 import '../../../customised_plan/data/datasources/demography_local_data_source.dart';
 
@@ -18,6 +19,8 @@ class GuestPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Title"),
+
+
       ),
       body: Center(
         child: Column(
@@ -34,7 +37,7 @@ class GuestPage extends StatelessWidget {
                 title: "Customize My Plan",
                 onPressed: () {
                   Navigator.of(context).push(CustomizedPlanPage.route());
-                })
+                }),
           ],
         ),
       ),

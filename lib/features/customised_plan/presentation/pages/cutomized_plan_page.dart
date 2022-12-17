@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yoboshu_mock_ui/core/constants/app_colors.dart';
+import 'package:yoboshu_mock_ui/core/constants/app_sizes.dart';
+import 'package:yoboshu_mock_ui/core/constants/app_text_styles.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/demography_step_widget.dart';
+
+import '../widgets/progress_bar.dart';
 
 
 class CustomizedPlanPage extends StatelessWidget {
@@ -21,9 +25,11 @@ class CustomizedPlanPage extends StatelessWidget {
         return Scaffold(
           backgroundColor: kDarkBg,
           appBar: AppBar(
-            title: const Text("Title"),
+            title: Text("Demography" , style: kStyleTextMain.copyWith( fontSize: kFontSizeHeading),),
+            centerTitle: true,
+            shadowColor: null,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: (){
                 if( (state is DemographyStepLoaded && state.currentStep.id == "start_demography") || (state is! DemographyStepLoaded)){
                   Navigator.of(context).pop();
@@ -32,6 +38,14 @@ class CustomizedPlanPage extends StatelessWidget {
                   BlocProvider.of<DemographyCubit>(context).goToPreviousStep();
                 }
               },
+            ),
+            backgroundColor: kDarkBg,
+            bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(20),
+              child: Padding(
+                padding: EdgeInsets.symmetric( horizontal: kMainPadding),
+                child: ProgressBar(),
+              ),
             ),
           ),
           body: Center(

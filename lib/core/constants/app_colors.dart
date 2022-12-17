@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const kColorAccentLight = Color(0xffcfecd9);
+const kColorAccentDark = Color(0xff91c1a1);
 
 /// Dark background colors
 const kDarkBg = Color(0xff181723);
