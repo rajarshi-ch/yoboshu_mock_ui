@@ -22,7 +22,7 @@ class _MultiselectCardState extends State<MultiselectCard> {
         });
       },
       child: AnimatedContainer(
-          margin: const EdgeInsets.only(left: 10, right: 10, top: 5),
+          margin: const EdgeInsets.only(left: 10, right: 10, top: 15),
           decoration: BoxDecoration(
             border: Border.fromBorderSide(
               isSelected
@@ -42,7 +42,7 @@ class _MultiselectCardState extends State<MultiselectCard> {
                 const Expanded(child: SizedBox()),
                 Text(
                   widget.title,
-                  style: kStyleTextMain,
+                  style: kStyleBodyMain,
                 ),
                 const Expanded(child: SizedBox()),
                 AnimatedSwitcher(

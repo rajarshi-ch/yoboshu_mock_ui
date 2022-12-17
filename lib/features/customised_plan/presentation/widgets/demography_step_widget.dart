@@ -9,6 +9,7 @@ import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demogra
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_statement.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/multiselect_card.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/primary_button.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/video_player.dart';
 
 import '../../../../core/constants/app_text_styles.dart';
@@ -77,8 +78,7 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
             if (widget.step is DemographyStepNum) ...[
               Text(
                 (widget.step as DemographyStepNum).question,
-                style: kStyleTextMain.copyWith(
-                    fontSize: 16, fontWeight: FontWeight.w500),
+                style: kStyleBodyMain,
               ),
 
               const SizedBox(
@@ -189,9 +189,9 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
                         initialValue: widget.bloc.getFormValue("height_feet"),
                       ),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.fromLTRB(8, 0, 16, 0),
-                      child: Text("feet"),
+                      child: Text("feet" , style: kStyleTextSubtitle,),
                     ),
                     Expanded(
                       child: TextFormField(
@@ -218,9 +218,9 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
                         initialValue: widget.bloc.getFormValue("height_inches"),
                       ),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(left: 8),
-                      child: Text("inches"),
+                      child: Text("inches" , style: kStyleTextSubtitle,),
                     ),
                     Expanded(child: Container())
                   ],
@@ -230,11 +230,11 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
               ),
 
               /// End button
-              OutlinedButton(
-                  onPressed: () {
+              PrimaryButton(
+                  onTap: () {
                     widget.bloc.goToNextStep();
                   },
-                  child: Text((widget.step as dynamic).ui.buttonDesc))
+                  title : (widget.step as dynamic).ui.buttonDesc)
             ],
 
             /// The step is of type == statement
@@ -253,14 +253,20 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
                             .imageURL)
                     : Image.network(
                         (widget.step as DemographyStepStatement).ui.imageURL),
-                Text((widget.step as DemographyStepStatement).message!),
-
+                const SizedBox(
+                  height: kSpacingHeight,
+                ),
+                Text((widget.step as DemographyStepStatement).message! , style: kStyleBodyMain,),
+                const SizedBox(
+                  height: kSpacingHeight,
+                ),
                 ///End Button
-                OutlinedButton(
-                    onPressed: () {
+                PrimaryButton(
+                    onTap: () {
                       widget.bloc.goToNextStep();
                     },
-                    child: Text((widget.step as dynamic).ui.buttonDesc))
+                    title : (widget.step as dynamic).ui.buttonDesc)
+
               ],
 
               /// This message depends on a previous choice
@@ -286,15 +292,15 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
                     .message!),
 
                 /// End button
-                OutlinedButton(
-                  onPressed: () {
-                    widget.bloc.goToNextStep();
-                  },
-                  child: Text(((widget.step as DemographyStepStatement)
-                      .messages![widget.bloc.getFormValue(kLastChosenIndex)]
-                      .ui
-                      .buttonDesc)),
-                ),
+                PrimaryButton(
+                    onTap: () {
+                      widget.bloc.goToNextStep();
+                    },
+                    title : ((widget.step as DemographyStepStatement)
+                        .messages![widget.bloc.getFormValue(kLastChosenIndex)]
+                        .ui
+                        .buttonDesc)),
+
               ]
             ],
 
@@ -302,11 +308,18 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
             ///
             if (widget.step is DemographyStepOption) ...[
               if ((widget.step as DemographyStepOption).preDescription != null)
-                Text((widget.step as DemographyStepOption).preDescription!),
-              Text((widget.step as DemographyStepOption).question!),
-              if ((widget.step as DemographyStepOption).postDescription != null)
-                Text((widget.step as DemographyStepOption).postDescription!),
+                Text((widget.step as DemographyStepOption).preDescription! , style: kStyleTextSubtitle,),
+              const SizedBox(
+                height: kSpacingHeight,
+              ),
 
+              Text((widget.step as DemographyStepOption).question!, style: kStyleBodyMain,),
+
+              if ((widget.step as DemographyStepOption).postDescription != null)
+                Text((widget.step as DemographyStepOption).postDescription! , style: kStyleTextSubtitle , textAlign: TextAlign.left,),
+              const SizedBox(
+                height: kSpacingHeight,
+              ),
               ///This is a single select option
               if (widget.step.type == "option")
                 ...(widget.step as DemographyStepOption)
@@ -334,17 +347,21 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
 
               ///This is a multi select option
               if (widget.step.type == "options") ...[
+
                 ...(widget.step as DemographyStepOption)
                     .options
                     .map((String option) => MultiselectCard(title: option))
                     .toList(),
-
+                const SizedBox(
+                  height: kSpacingHeight,
+                ),
                 ///End Button
-                OutlinedButton(
-                    onPressed: () {
+
+                PrimaryButton(
+                    onTap: () {
                       widget.bloc.goToNextStep();
                     },
-                    child: Text((widget.step as dynamic).ui.buttonDesc))
+                    title : (widget.step as dynamic).ui.buttonDesc)
               ],
             ],
           ],
