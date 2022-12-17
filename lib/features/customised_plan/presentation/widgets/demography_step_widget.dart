@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:yoboshu_mock_ui/core/constants/app_strings.dart';
 import 'package:yoboshu_mock_ui/core/utils/date_fns.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_base.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_num.dart';
@@ -152,14 +153,45 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
                   Expanded(child: Container())
                 ],
               ),
+
+            /// End button
+            OutlinedButton(
+                onPressed: () {
+                  widget.bloc.goToNextStep();
+                },
+                child: Text((widget.step as dynamic).ui.buttonDesc))
           ],
 
           /// The step is of type == statement
           ///
           if (widget.step is DemographyStepStatement) ...[
-            (widget.step as DemographyStepStatement).ui.imageURL.contains(".mp4") ?
-            VideoApp(url: (widget.step as DemographyStepStatement).ui.imageURL ) : Image.network((widget.step as DemographyStepStatement).ui.imageURL),
-            Text((widget.step as DemographyStepStatement).message!),
+
+            /// This message doesn't depend on a previous choice
+            if((widget.step as DemographyStepStatement).messages == null) ...[
+              (widget.step as DemographyStepStatement).ui.imageURL.contains(".mp4") ?
+              VideoApp(url: (widget.step as DemographyStepStatement).ui.imageURL ) : Image.network((widget.step as DemographyStepStatement).ui.imageURL),
+              Text((widget.step as DemographyStepStatement).message!),
+
+              ///End Button
+              OutlinedButton(
+                  onPressed: () {
+                    widget.bloc.goToNextStep();
+                  },
+                  child: Text((widget.step as dynamic).ui.buttonDesc))
+            ],
+
+            /// This message depends on a previous choice
+            if((widget.step as DemographyStepStatement).messages != null) ...[
+              (widget.step as DemographyStepStatement).messages![widget.bloc.getFormValue(kLastChosenIndex)].ui.imageURL.contains(".mp4") ?
+              VideoApp(url: (widget.step as DemographyStepStatement).messages![widget.bloc.getFormValue(kLastChosenIndex)].ui.url ) : Image.network((widget.step as DemographyStepStatement).messages![widget.bloc.getFormValue(kLastChosenIndex)].ui.imageURL),
+              Text((widget.step as DemographyStepStatement).messages![widget.bloc.getFormValue(kLastChosenIndex)].message!),
+              /// End button
+              OutlinedButton(
+                  onPressed: () {
+                    widget.bloc.goToNextStep();
+                  },
+                  child: Text(((widget.step as DemographyStepStatement).messages![widget.bloc.getFormValue(kLastChosenIndex)].ui.buttonDesc)), ),
+            ]
           ],
 
           /// The step is of type == option/s
@@ -172,20 +204,29 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
             ///This is a single select option
             if(widget.step.type =="option") ...(widget.step as DemographyStepOption).options.map((String option) => OutlinedButton(onPressed: (){
               //TODO: Set selection of the option
+              if( (widget.step as DemographyStepOption).key != null) {
+                widget.bloc.setFormValue( (widget.step as DemographyStepOption).key! , option);
+
+                /// Store the index of the chosen option
+                widget.bloc.setFormValue( kLastChosenIndex , (widget.step as DemographyStepOption).options.indexOf(option) );
+              }
               widget.bloc.goToNextStep();
             }, child: Text(option))).toList(),
 
             ///This is a multi select option
-            if(widget.step.type =="options") ...(widget.step as DemographyStepOption).options.map((String option) => MultiselectCard(title: option)).toList(),
+            if(widget.step.type =="options") ...[
+              ...(widget.step as DemographyStepOption).options.map((String option) => MultiselectCard(title: option)).toList(),
+              ///End Button
+              OutlinedButton(
+                  onPressed: () {
+                    widget.bloc.goToNextStep();
+                  },
+                  child: Text((widget.step as dynamic).ui.buttonDesc))
+            ],
 
           ],
 
-          ///Common primary button
-          if(widget.step.type != "option") OutlinedButton(
-              onPressed: () {
-                widget.bloc.goToNextStep();
-              },
-              child: Text((widget.step as dynamic).ui.buttonDesc))
+
         ],
       ),
     );
