@@ -6,6 +6,7 @@ import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demogra
 import 'package:yoboshu_mock_ui/features/customised_plan/domain/entities/demography_step_statement.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/multiselect_card.dart';
+import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/video_player.dart';
 
 class DemographyStepWidget extends StatefulWidget {
   const DemographyStepWidget({Key? key, required this.step, required this.bloc})
@@ -156,7 +157,8 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
           /// The step is of type == statement
           ///
           if (widget.step is DemographyStepStatement) ...[
-            Image.network((widget.step as DemographyStepStatement).ui.imageURL),
+            (widget.step as DemographyStepStatement).ui.imageURL.contains(".mp4") ?
+            VideoApp(url: (widget.step as DemographyStepStatement).ui.imageURL ) : Image.network((widget.step as DemographyStepStatement).ui.imageURL),
             Text((widget.step as DemographyStepStatement).message!),
           ],
 
@@ -179,7 +181,7 @@ class _DemographyStepWidgetState extends State<DemographyStepWidget>
           ],
 
           ///Common primary button
-          if(widget.step.type != "option" && widget.step.type != "options") OutlinedButton(
+          if(widget.step.type != "option") OutlinedButton(
               onPressed: () {
                 widget.bloc.goToNextStep();
               },

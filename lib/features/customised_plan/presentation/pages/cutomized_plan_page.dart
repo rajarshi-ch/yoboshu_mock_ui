@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yoboshu_mock_ui/core/constants/app_colors.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/bloc/demography_cubit.dart';
 import 'package:yoboshu_mock_ui/features/customised_plan/presentation/widgets/demography_step_widget.dart';
 
@@ -18,6 +19,7 @@ class CustomizedPlanPage extends StatelessWidget {
     return BlocBuilder<DemographyCubit, DemographyState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: kDarkBg,
           appBar: AppBar(
             title: const Text("Title"),
             leading: IconButton(
@@ -54,11 +56,6 @@ class CustomizedPlanPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            tooltip: 'Customize My Plan',
-            child: const Icon(Icons.add),
           ), // This trailing comma makes auto-formatting nicer for build methods.
         );
       },

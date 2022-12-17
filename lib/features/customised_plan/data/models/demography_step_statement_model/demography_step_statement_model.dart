@@ -15,8 +15,8 @@ class DemographyStepStatementModel extends DemographyStepStatement {
         required String previous,
         required String next,
         required String type,
-        required String message,
-        required UiModel ui,
+        String? message,
+        UiModel? ui,
       List<MessageModel>? messages})
       : super(id, previous, next, type, message , ui , messages);
 

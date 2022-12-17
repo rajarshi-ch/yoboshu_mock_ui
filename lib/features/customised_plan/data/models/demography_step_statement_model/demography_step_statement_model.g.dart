@@ -13,8 +13,10 @@ DemographyStepStatementModel _$DemographyStepStatementModelFromJson(
       previous: json['previous'] as String,
       next: json['next'] as String,
       type: json['type'] as String,
-      message: json['message'] as String,
-      ui: UiModel.fromJson(json['ui'] as Map<String, dynamic>),
+      message: json['message'] as String?,
+      ui: json['ui'] == null
+          ? null
+          : UiModel.fromJson(json['ui'] as Map<String, dynamic>),
       messages: (json['messages'] as List<dynamic>?)
           ?.map((e) => MessageModel.fromJson(e as Map<String, dynamic>))
           .toList(),
