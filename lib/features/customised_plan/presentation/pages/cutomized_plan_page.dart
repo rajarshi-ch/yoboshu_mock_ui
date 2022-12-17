@@ -25,7 +25,7 @@ class CustomizedPlanPage extends StatelessWidget {
         return Scaffold(
           backgroundColor: kDarkBg,
           appBar: AppBar(
-            title: Text("Demography" , style: kStyleTextMain.copyWith( fontSize: kFontSizeHeading),),
+            title: Text("Demography" , style: kStyleTextMain.copyWith( fontSize: kFontSizeHeading, fontWeight: FontWeight.w600 ),),
             centerTitle: true,
             shadowColor: null,
             leading: IconButton(
@@ -48,27 +48,25 @@ class CustomizedPlanPage extends StatelessWidget {
               ),
             ),
           ),
-          body: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
 
-                  if( state is DemographyLoading) const Text(
-                    "Loading",
-                  ),
+                if( state is DemographyLoading) const Text(
+                  "Loading",
+                ),
 
-                  if( state is DemographyError) const Text(
-                    "Error",
-                  ),
+                if( state is DemographyError) const Text(
+                  "Error",
+                ),
 
-                  if( state is DemographyInitial) const Text(
-                    "Initial",
-                  ),
+                if( state is DemographyInitial) const Text(
+                  "Initial",
+                ),
 
-                  if( state is DemographyStepLoaded ) DemographyStepWidget(step: state.currentStep, bloc: BlocProvider.of<DemographyCubit>(context)),
-                ],
-              ),
+                if( state is DemographyStepLoaded ) DemographyStepWidget(step: state.currentStep, bloc: BlocProvider.of<DemographyCubit>(context)),
+              ],
             ),
           ), // This trailing comma makes auto-formatting nicer for build methods.
         );

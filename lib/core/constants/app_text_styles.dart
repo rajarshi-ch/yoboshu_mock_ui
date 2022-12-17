@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yoboshu_mock_ui/core/constants/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-const kStyleTextMain = TextStyle( color: Colors.white);
+final kStyleTextMain = GoogleFonts.raleway(
+  color: Colors.white,
+);
