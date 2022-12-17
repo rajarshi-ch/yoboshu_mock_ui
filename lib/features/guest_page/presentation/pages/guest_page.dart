@@ -15,6 +15,8 @@ import 'package:yoboshu_mock_ui/features/guest_page/presentation/widgets/horizon
 import '../../../customised_plan/data/datasources/demography_local_data_source.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../widgets/carousal_with_dots.dart';
+
 class GuestPage extends StatelessWidget {
   GuestPage({Key? key}) : super(key: key);
   static const name = "Piyush";
@@ -51,9 +53,9 @@ class GuestPage extends StatelessWidget {
                 children: [
                   CarouselSlider.builder(
                     itemCount: 3,
-                    itemBuilder:
-                        (BuildContext context, int itemIndex, int pageViewIndex) =>
-                            Container(
+                    itemBuilder: (BuildContext context, int itemIndex,
+                            int pageViewIndex) =>
+                        Container(
                       color: colorWheel[itemIndex],
                     ),
                     options: CarouselOptions(
@@ -98,18 +100,78 @@ class GuestPage extends StatelessWidget {
                     height: 30,
                   ),
                   const HorizontalDivider(),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kMainPadding),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "real people \nreal transformation",
-                          style: kStyleHeading.copyWith( fontSize: 18),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kMainPadding, vertical: 8),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "real people \nreal transformation",
+                        style: kStyleTextMain.copyWith(
+                            fontSize: 18, fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                  ),
+                  Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kMainPadding),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(kDefaultBorderRadius),
+                              color: kYellow),
+                          height: 500,
+                          width: double.infinity,
                         ),
-                      ),),
+                      ),
+                      Positioned.fill(
+                          child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                                color: kDarkBg, shape: BoxShape.circle),
+                            child: Icon(
+                              Icons.chevron_left,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                          ),
+                          Expanded(
+                            child: SizedBox(),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                                color: kDarkAccent, shape: BoxShape.circle),
+                            child: Icon(
+                              Icons.chevron_right,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                          ),
+                        ],
+                      ))
+                    ],
+                  ),
 
                   const SizedBox(
-                    height: 100,
+                    height: 30,
+                  ),
+                  HorizontalDivider(),
+
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  CarouselWithIndicatorDemo(),
+                  HorizontalDivider(),
+                  const SizedBox(
+                    height: 300,
                   ),
                 ],
               ),
@@ -117,6 +179,7 @@ class GuestPage extends StatelessWidget {
             Positioned(
               bottom: 0,
               left: 0,
+              right: 0,
               child: Container(
                 height: 120.0,
                 color: kDarkBg.withOpacity(0.7),
@@ -124,11 +187,13 @@ class GuestPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 4),
                       child: PrimaryButtonCompact(
                           title: "Customize My Plan",
                           onTap: () {
-                            Navigator.of(context).push(CustomizedPlanPage.route());
+                            Navigator.of(context)
+                                .push(CustomizedPlanPage.route());
                           }),
                     ),
                     SecondaryButton(),

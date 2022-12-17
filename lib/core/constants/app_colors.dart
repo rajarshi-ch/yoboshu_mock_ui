@@ -7,6 +7,10 @@ const kColorAccentDark = Color(0xff91c1a1);
 const kDarkBg = Color(0xff181723);
 const kDarkAccent = Color(0xff2a2839);
 
+/// Light background colors
+
+const kYellow = Color(0xfffef9e6);
+
 /// Whitish gray colors , mainly for text
 const kGrayBright = Color(0xffdedee4);
 const kGrayMid = Color(0xffafafb1);
